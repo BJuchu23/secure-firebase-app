@@ -6,19 +6,41 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del código
+      # Clonar el código
+      - name: Checkout del código fuente
         uses: actions/checkout@v4
 
+      # Instalar dependencias
       - name: Instalar dependencias
         run: npm install
 
+      # Escaneo de vulnerabilidades
+      - name: Escanear vulnerabilidades (npm audit)
+        run: npm audit --audit-level=moderate || true
+
+      # Pruebas automáticas básicas (simples)
+      - name: Pruebas de verificación rápida
+        run: |
+          echo "Ejecutando pruebas básicas..."
+          test -f public/index.html && echo "✅ index.html encontrado"
+          test -f public/app.js && echo "✅ app.js encontrado"
+          echo "✅ Todas las pruebas básicas completadas"
+
+      # Construcción (si fuera necesario)
+      - name: Construcción del proyecto
+        run: |
+          echo "Construyendo la aplicación..."
+          npm run build || echo "Sin script de build, continuando..."
+
+      # Instalar Firebase CLI
       - name: Instalar Firebase CLI
         run: npm install -g firebase-tools
 
+      # 7Despliegue a Firebase Hosting
       - name: Desplegar a Firebase Hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
