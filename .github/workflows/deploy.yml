@@ -3,21 +3,15 @@ name: CI/CD Firebase Secure App
 on:
   push:
     branches:
-      - main   # Ejecuta el pipeline solo cuando hagas push a la rama main
+      - main
 
 jobs:
   deploy:
-    name: Deploy a Firebase Hosting
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: Instalar dependencias
         run: npm install
@@ -25,19 +19,7 @@ jobs:
       - name: Instalar Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Construcción de la aplicación (si aplica)
-        run: echo "Construcción lista (no hay build en proyecto estático)."
-
-      - name: Ejecutar pruebas básicas
-        run: |
-          echo "Simulando pruebas automáticas..."
-          echo "✅ Código limpio, sin errores críticos detectados."
-
-      - name: Escanear dependencias en busca de vulnerabilidades
-        run: |
-          echo "Iniciando escaneo..."
-          npm audit || true
-          echo "Escaneo completado ✅"
-
       - name: Desplegar a Firebase Hosting
-        run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting --project sensor-64f89
