@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secure Login · Firebase</title>
+  
+<script defer src="/__/firebase/12.4.0/firebase-app-compat.js"></script>
+<script defer src="/__/firebase/12.4.0/firebase-auth-compat.js"></script>
+<script defer src="/__/firebase/init.js"></script>
+<script defer src="log.js"></script>
+<script defer src="app.js"></script>
+
+
+  <!-- CSP básica -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 script-src 'self' 'unsafe-inline' https:;
+                 connect-src 'self' https://securetoken.googleapis.com https://identitytoolkit.googleapis.com;
+                 style-src 'self' 'unsafe-inline';
+                 img-src 'self' data: https:;">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="card">
+    <h1>🔐 Inicio de sesión seguro</h1>
+
+    <div id="auth-box">
+      <input id="email" type="email" placeholder="Correo electrónico" autocomplete="username" />
+      <input id="password" type="password" placeholder="Contraseña (min 6)" autocomplete="current-password" />
+      <div class="actions">
+        <button id="btn-register">Registrar</button>
+        <button id="btn-login">Iniciar sesión</button>
+        <button id="btn-reset" class="secondary">¿Olvidaste tu contraseña?</button>
+      </div>
+      <p id="hint" style="font-size:.9rem;color:#455a64;margin-top:8px">
+        Tras registrarte, te enviaremos un correo de verificación. Debes verificarlo para entrar.
+      </p>
+    </div>
+
+    <div id="user-box" style="display:none;">
+      <p>Hola, <strong id="user-email"></strong> 👋</p>
+      <p id="verify-warning" style="display:none;color:#b71c1c;">
+        Tu correo no está verificado. Te enviamos un enlace de verificación. Revisa tu bandeja y vuelve a iniciar sesión.
+      </p>
+      <div class="actions">
+        <button id="btn-logout" class="secondary">Cerrar sesión</button>
+      </div>
+      <div class="secure-area">
+        <p>✅ Zona segura: visible solo si tu email está verificado.</p>
+      </div>
+    </div>
+
+    <p class="foot">© 2025 SecureLogin.</p>
+  </div>
+</body>
+</html>
